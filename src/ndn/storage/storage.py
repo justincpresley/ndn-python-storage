@@ -14,7 +14,7 @@ from ndn.encoding import NonStrictName
 
 class Storage(ABC):
     def __init__(self) -> None:
-        cache:NameTrie = NameTrie()
+        self.cache:NameTrie = NameTrie()
     @staticmethod
     def _time_ms() -> int:
         return int(get_time() * 1000)

@@ -10,6 +10,7 @@ from typing import Optional
 from time import time as get_time
 # NDN Imports
 from ndn.name_tree import NameTrie
+from ndn.encoding import NonStrictName
 
 class Storage(ABC):
     def __init__(self) -> None:

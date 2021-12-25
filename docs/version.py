@@ -5,4 +5,4 @@
 #    @Pip-Library: https://pypi.org/project/ndn-storage
 
 # Version of Storage according to pip
-__version__ = "0.1.9"
+__version__ = "0.1.10"

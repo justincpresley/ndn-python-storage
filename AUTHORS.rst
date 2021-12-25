@@ -9,5 +9,5 @@ The Names of all authors associated with the changes made / implementation of th
   * *Justin C Presley* (justincpresley_)
 
 .. _justincpresley: https://github.com/justincpresley
-.. _CHANGES.rst: https://github.com/UCLA-IRL/ndn-python-repo
+.. _CHANGES.rst: https://github.com/justincpresley/ndn-python-storage/blob/master/CHANGES.rst
 .. _ndn-python-repo: https://github.com/UCLA-IRL/ndn-python-repo

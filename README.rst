@@ -13,6 +13,9 @@ The implementation is on our github-repo_.
 
 There is no documentation at this moment. However, as more storage solutions are added, a documentation will be formed.
 
+To install, please use the pip library ndn-storage_. To import, use ndn.storage like you would with ndn.encoding.
+
 .. _ndn-python-repo: https://github.com/UCLA-IRL/ndn-python-repo
 .. _python-ndn: https://github.com/named-data/python-ndn
 .. _github-repo: https://github.com/justincpresley/ndn-python-storage
+.. _ndn-storage: https://pypi.org/project/ndn-storage

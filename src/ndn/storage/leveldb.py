@@ -2,7 +2,7 @@
 #    @Author-Email: justincpresley@gmail.com
 #    @Project: NDN Storage
 #    @Source-Code: https://github.com/justincpresley/ndn-python-storage
-#    @Pip-Library: https://pypi.org/project/ndn-storage/
+#    @Pip-Library: https://pypi.org/project/ndn-storage
 
 # Change Notice! This file oringinates from another repository.
 # Please look at CHANGES.rst for more details.

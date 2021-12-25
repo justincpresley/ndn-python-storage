@@ -6,7 +6,7 @@
 
 # API classes
 from .disk import DiskStorage
-from .leveldb import LevelDBStoage
+from .leveldb import LevelDBStorage
 from .memory import MemoryStorage
 from .monogodb import MonogoDBStorage
 from .sqlite import SqliteStorage

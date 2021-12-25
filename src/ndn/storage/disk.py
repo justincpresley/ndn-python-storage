@@ -7,15 +7,19 @@
 # Change Notice! This file oringinates from another repository.
 # Please look at CHANGES.rst for more details.
 
+# Basic Libraries
 import asyncio as aio
 from contextlib import suppress
+from typing import List, Optional
+from abc import abstractmethod
+# NDN Imports
 from ndn.encoding.tlv_var import parse_tl_num
 from ndn.encoding import Name, parse_data, NonStrictName
 from ndn.name_tree import NameTrie
-from typing import List, Optional
-from abc import ABC, abstractmethod
+# Custom Imports
+from .storage import Storage
 
-class DiskStorage(ABC):
+class DiskStorage(Storage):
     def __init__(self, write_period:int=10) -> None:
         super().__init__()
         self.write_period:int = write_period

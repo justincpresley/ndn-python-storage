@@ -7,10 +7,12 @@
 # Change Notice! This file oringinates from another repository.
 # Please look at CHANGES.rst for more details.
 
+# Basic Libraries
 import base64
 from pymongo import MongoClient, ReplaceOne
-from .disk import DiskStorage
 from typing import List, Optional
+# Custom Imports
+from .disk import DiskStorage
 
 class MongoDBStorage(DiskStorage):
     def __init__(self, db:str, collection:str, write_period:int=10) -> None:

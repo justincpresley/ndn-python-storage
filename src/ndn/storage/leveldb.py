@@ -7,11 +7,13 @@
 # Change Notice! This file oringinates from another repository.
 # Please look at CHANGES.rst for more details.
 
+# Basic Libraries
 import os
 import pickle
 import plyvel
-from .disk import DiskStorage
 from typing import List, Optional
+# Custom Imports
+from .disk import DiskStorage
 
 class LevelDBStorage(DiskStorage):
     def __init__(self, directory:str, write_period:int=10) -> None:

@@ -8,4 +8,4 @@ The following files found at ndn-python-repo_ using the commit ``960b1365c968235
   * ndn_python_repo/storage/sqlite.py
   * ndn_python_repo/storage/storage_base.py
 
-The changes made to all of these files include file naming, comments, and added functionality.
+The changes made to all of these files include file naming, comments, function naming, and added functionality.

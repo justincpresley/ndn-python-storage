@@ -65,7 +65,7 @@ class DiskStorage(ABC):
             self._put_batch(keys, values, expire_time_mss)
         self.cache = NameTrie()
 
-    def put_data_packet(self, name:NonStrictName, data:bytes) -> None:
+    def put_packet(self, name:NonStrictName, data:bytes) -> None:
         _, meta_info, _, _ = parse_data(data)
         expire_time_ms:int = self._time_ms()
         if meta_info.freshness_period:
@@ -77,7 +77,7 @@ class DiskStorage(ABC):
         else:
             self._put(self._get_name_bytes_wo_tl(name), data, expire_time_ms)
 
-    def get_data_packet(self, name:NonStrictName, can_be_prefix:bool=False, must_be_fresh:bool=False) -> Optional[bytes]:
+    def get_packet(self, name:NonStrictName, can_be_prefix:bool=False, must_be_fresh:bool=False) -> Optional[bytes]:
         name = Name.normalize(name)
         # memory lookup
         try:
@@ -99,7 +99,7 @@ class DiskStorage(ABC):
             key = self._get_name_bytes_wo_tl(name)
             return self._get(key, can_be_prefix, must_be_fresh)
 
-    def remove_data_packet(self, name:NonStrictName) -> bool:
+    def remove_packet(self, name:NonStrictName) -> bool:
         removed = False
         name = Name.normalize(name)
         try:

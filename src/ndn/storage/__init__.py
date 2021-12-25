@@ -8,6 +8,6 @@
 from .disk import DiskStorage
 from .leveldb import LevelDBStorage
 from .memory import MemoryStorage
-from .monogodb import MonogoDBStorage
+from .mongodb import MonogoDBStorage
 from .sqlite import SqliteStorage
 from .storage import Storage

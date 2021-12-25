@@ -1,0 +1,29 @@
+#    @Author: Justin C Presley
+#    @Author-Email: justincpresley@gmail.com
+#    @Project: NDN Storage
+#    @Source-Code: https://github.com/justincpresley/ndn-python-storage
+#    @Pip-Library: https://pypi.org/project/ndn-storage/
+
+# Compiled python modules.
+*.pyc
+*.pytest_cache
+*/__pycache__
+
+# The build folder
+/build/
+
+# Setuptools distribution folder.
+/dist/
+
+# Python egg metadata, regenerated from source files by setuptools.
+/*.egg-info
+/src/*.egg-info
+
+# Ignore Folder
+ignore/*
+
+# Any Log Files
+*.log
+
+# Notes
+notes

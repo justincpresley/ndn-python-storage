@@ -22,6 +22,8 @@ from .storage import Storage
 class DiskStorage(Storage):
     class UninitializedError(Exception):
         pass # raised when DiskStorage is used without initializing the storage.
+    class ReinitalizedError(Exception):
+        pass # raised when trying to initialize and already initialized DiskStorage.
 
     def __init__(self, write_period:int=10, initialize:bool=True) -> None:
         super().__init__()
@@ -84,6 +86,8 @@ class DiskStorage(Storage):
     def initialize(self) -> None:
         if self.initialized != True:
             self._initialize_storage()
+        else:
+            raise self.ReinitalizedError("The storage was initialized more than once.")
 
     def put_packet(self, name:NonStrictName, data:bytes) -> None:
         if self.initialized != True:

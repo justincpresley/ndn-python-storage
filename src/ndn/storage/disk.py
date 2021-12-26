@@ -84,10 +84,9 @@ class DiskStorage(Storage):
         self.cache = NameTrie()
 
     def initialize(self) -> None:
-        if self.initialized != True:
-            self._initialize_storage()
-        else:
+        if self.initialized == True:
             raise self.ReinitalizedError("The storage was initialized more than once.")
+        self._initialize_storage()
 
     def put_packet(self, name:NonStrictName, data:bytes) -> None:
         if self.initialized != True:

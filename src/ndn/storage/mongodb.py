@@ -15,20 +15,19 @@ from typing import List, Optional
 from .disk import DiskStorage
 
 class MongoDBStorage(DiskStorage):
-    def __init__(self, db:str, collection:str, write_period:int=10) -> None:
-        super().__init__(write_period)
+    def __init__(self, db:str, collection:str, write_period:int=10, initialize:bool=True) -> None:
         self._db = db
         self._collection = collection
         self._uri = 'mongodb://127.0.0.1:27017/'
+        super().__init__(write_period, initialize)
+
+    def _initialize_storage(self) -> None:
         self.client = MongoClient(self._uri)
+        self.client.server_info() # will throw an exception if not connected
         self.c_db = self.client[self._db]
         self.c_collection = self.c_db[self._collection]
-
-        client = MongoClient(self._uri)
-        client.server_info()    # will throw an exception if not connected
-        c_db = client[self._db]
-        c_collection = c_db[self._collection]
-        c_collection.create_index('key', unique=True)
+        self.c_collection.create_index('key', unique=True)
+        self._start_writing()
 
     def _put(self, key:bytes, value:bytes, expire_time_ms:Optional[int]=None) -> None:
         key = base64.b16encode(key).decode()

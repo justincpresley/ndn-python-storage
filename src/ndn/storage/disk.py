@@ -20,15 +20,27 @@ from ndn.name_tree import NameTrie
 from .storage import Storage
 
 class DiskStorage(Storage):
-    def __init__(self, write_period:int=10) -> None:
+    class UninitializedError(Exception):
+        pass # raised when DiskStorage is used without initializing the storage.
+
+    def __init__(self, write_period:int=10, initialize:bool=True) -> None:
         super().__init__()
         self.write_period:int = write_period
-        if write_period > 0:
-            self.write_back_task = aio.create_task(self._periodic_write_back())
+        self.initialized:bool = initialize
+        if initialize == True:
+            self._initialize_storage()
+
     def __del__(self) -> None:
-        if write_period > 0:
+        if self.write_period > 0 and self.initialized:
             self.write_back_task.cancel()
 
+    def _start_writing(self) -> None:
+        if self.write_period > 0:
+            self.write_back_task = aio.create_task(self._periodic_write_back())
+
+    @abstractmethod
+    def _initialize_storage(self) -> None:
+        return
     @abstractmethod
     def _put(self, key:bytes, data:bytes, expire_time_ms:int=None) -> None:
         return
@@ -69,23 +81,33 @@ class DiskStorage(Storage):
             self._put_batch(keys, values, expire_time_mss)
         self.cache = NameTrie()
 
+    def initialize(self) -> None:
+        if self.initialized != True:
+            self._initialize_storage()
+
     def put_packet(self, name:NonStrictName, data:bytes) -> None:
+        if self.initialized != True:
+            raise self.UninitializedError("The storage is not initialized.")
+
         _, meta_info, _, _ = parse_data(data)
         expire_time_ms:int = self._time_ms()
         if meta_info.freshness_period:
             expire_time_ms += meta_info.freshness_period
 
         name = Name.normalize(name)
-        if write_period > 0:
+        if self.write_period > 0:
             self.cache[name] = (data, expire_time_ms)
         else:
             self._put(self._get_name_bytes_wo_tl(name), data, expire_time_ms)
 
     def get_packet(self, name:NonStrictName, can_be_prefix:bool=False, must_be_fresh:bool=False) -> Optional[bytes]:
+        if self.initialized != True:
+            raise self.UninitializedError("The storage is not initialized.")
+
         name = Name.normalize(name)
         # memory lookup
         try:
-            if write_period > 0:
+            if self.write_period > 0:
                 if not can_be_prefix:
                     data, expire_time_ms = self.cache[name]
                     if not must_be_fresh or expire_time_ms > self._time_ms():
@@ -104,10 +126,13 @@ class DiskStorage(Storage):
             return self._get(key, can_be_prefix, must_be_fresh)
 
     def remove_packet(self, name:NonStrictName) -> bool:
+        if self.initialized != True:
+            raise self.UninitializedError("The storage is not initialized.")
+
         removed = False
         name = Name.normalize(name)
         try:
-            if write_period > 0:
+            if self.write_period > 0:
                 del self.cache[name]
                 removed = True
             else:

@@ -16,15 +16,18 @@ from typing import List, Optional
 from .disk import DiskStorage
 
 class LevelDBStorage(DiskStorage):
-    def __init__(self, directory:str, write_period:int=10) -> None:
-        super().__init__(write_period)
-        db_dir = os.path.expanduser(directory)
-        if not os.path.exists(db_dir):
+    def __init__(self, directory:str, write_period:int=10, initialize:bool=True) -> None:
+        self.db_dir = os.path.expanduser(directory)
+        if not os.path.exists(self.db_dir):
             try:
-                os.makedirs(db_dir)
+                os.makedirs(self.db_dir)
             except PermissionError:
-                raise PermissionError(f'Could not create database directory: {db_path}') from None
-        self.db = plyvel.DB(db_dir, create_if_missing=True)
+                raise PermissionError(f'Could not create database directory: {self.db_dir}') from None
+        super().__init__(write_period, initialize)
+
+    def _initialize_storage(self) -> None:
+        self.db = plyvel.DB(self.db_dir, create_if_missing=True)
+        self._start_writing()
 
     def _put(self, key:bytes, value:bytes, expire_time_ms:Optional[int]=None) -> None:
         self.db.put(key, pickle.dumps((value, expire_time_ms)))

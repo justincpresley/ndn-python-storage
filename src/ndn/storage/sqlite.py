@@ -15,16 +15,18 @@ from typing import List, Optional
 from .disk import DiskStorage
 
 class SqliteStorage(DiskStorage):
-    def __init__(self, db_path:str, write_period:int=10):
-        super().__init__(write_period)
-        db_path = os.path.expanduser(db_path)
-        if len(os.path.dirname(db_path)) > 0 and not os.path.exists(os.path.dirname(db_path)):
-            try:
-                os.makedirs(os.path.dirname(db_path))
-            except PermissionError:
-                raise PermissionError(f'Could not create database directory: {db_path}') from None
+    def __init__(self, db_path:str, write_period:int=10, initialize:bool=True):
 
-        self.conn = sqlite3.connect(os.path.expanduser(db_path), check_same_thread=False)
+        self.db_path = os.path.expanduser(db_path)
+        if len(os.path.dirname(self.db_path)) > 0 and not os.path.exists(os.path.dirname(self.db_path)):
+            try:
+                os.makedirs(os.path.dirname(self.db_path))
+            except PermissionError:
+                raise PermissionError(f'Could not create database directory: {self.db_path}') from None
+        super().__init__(write_period, initialize)
+
+    def _initialize_storage(self) -> None:
+        self.conn = sqlite3.connect(os.path.expanduser(self.db_path), check_same_thread=False)
         c = self.conn.cursor()
         c.execute("""
             CREATE TABLE IF NOT EXISTS data (
@@ -34,6 +36,7 @@ class SqliteStorage(DiskStorage):
             )
         """)
         self.conn.commit()
+        self._start_writing()
 
     def _put(self, key:bytes, value:bytes, expire_time_ms:Optional[int]=None):
         c = self.conn.cursor()

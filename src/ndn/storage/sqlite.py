@@ -16,7 +16,6 @@ from .disk import DiskStorage
 
 class SqliteStorage(DiskStorage):
     def __init__(self, db_path:str, write_period:int=10, initialize:bool=True):
-
         self.db_path = os.path.expanduser(db_path)
         if len(os.path.dirname(self.db_path)) > 0 and not os.path.exists(os.path.dirname(self.db_path)):
             try:

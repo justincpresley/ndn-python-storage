@@ -45,11 +45,12 @@ setup(
         'Topic :: System :: Networking',
         'License :: OSI Approved :: Apache Software License',
         'Programming Language :: Python :: 3.8',
-        'Programming Language :: Python :: 3.9'
+        'Programming Language :: Python :: 3.9',
+        'Programming Language :: Python :: 3.10'
     ],
     keywords='NDN STORAGE DISK MEMORY CACHE',
     packages=find_packages('src'),
     package_dir={'': 'src'},
     install_requires=_parse_requirements('docs/requirements.txt'),
-    python_requires=">=3.8,<3.10.*",
+    python_requires=">=3.8",
     zip_safe=False)

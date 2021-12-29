@@ -7,7 +7,7 @@ as variations of NDN repositories (repo, nr-archway, hydra, etc), NDN sync proto
 an API is provided.
 
 The Named Data Networking Storage Library is implemented using and simply adds to python-ndn_, nicknamed
-``ndn-python-storage``
+``ndn-python-storage`` obtained by ndn-storage_.
 
 The implementation is on our github-repo_.
 

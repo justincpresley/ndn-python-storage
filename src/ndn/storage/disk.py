@@ -38,7 +38,7 @@ class DiskStorage(Storage):
 
     def _start_writing(self) -> None:
         if self.write_period > 0:
-            self.write_back_task = aio.create_task(self._periodic_write_back())
+            self.write_back_task = aio.get_event_loop().create_task(self._periodic_write_back())
 
     @abstractmethod
     def _initialize_storage(self) -> None:
